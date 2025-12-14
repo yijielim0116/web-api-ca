@@ -1,2 +1,3 @@
-# web-api-ca
-An assignment about a movie web app with api 
+# Assignment 2 - Web API.
+
+Name: Yi Jie Lim
