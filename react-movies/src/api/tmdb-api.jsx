@@ -136,7 +136,7 @@ export const getTopRatedMovies = () => {
 export const getPopularMovies = ({ queryKey }) => {
   const [, { page = 1 } = {}] = queryKey;
   return fetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
   ).then(async (response) => {
     if (!response.ok) {
       const error = await response.json();
@@ -226,7 +226,12 @@ export const getCollectionDetails = ({ queryKey }) => {
 export const searchMovies = ({ queryKey }) => {
   const [, { query = "", page = 1 }] = queryKey;
   const q = encodeURIComponent(query);
-  return safeFetch(
-    `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&query=${q}&page=${page}&include_adult=false`
-  );
+  return fetch(
+  `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&query=${q}&page=${page}&include_adult=false`
+).then(async (r) => {
+  if (!r.ok) {
+    throw new Error((await r.json()).status_message || "Something went wrong");
+  }
+  return r.json();
+});
 };
