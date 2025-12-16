@@ -4,7 +4,7 @@ import { getMovies } from '../tmdb-api';
 
 import Favourite from './favouriteModel.js';
 import Watchlist from './watchlistModel.js';
-import { authenticate } from '../authenticate/index.js';
+import  authenticate  from '../../authenticate/index.js';
 
 const router = express.Router();
 
