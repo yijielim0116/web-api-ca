@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Navigate, Routes } from "react-router"; 
+import { BrowserRouter, Route, Navigate, Routes } from "react-router";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,6 +8,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import ColorModeProvider from "./contexts/colorModeContext";
 import SiteHeader from "./components/siteHeader";
 import MoviesContextProvider from "./contexts/moviesContext";
+
+import AuthContextProvider from "./contexts/authContext";
+import LoginPage from "./pages/loginPage";
+import SignupPage from "./pages/signupPage";
 
 import HomePage from "./pages/homepage";
 import MoviePage from "./pages/movieDetailsPage";
@@ -28,46 +32,59 @@ import BackToTop from "./components/BackToTop";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 360000,          // 6 minutes
-      refetchInterval: 360000,    // 6 minutes
+      staleTime: 360000,
+      refetchInterval: 360000,
       refetchOnWindowFocus: false,
     },
   },
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 const App = () => {
   return (
     <ColorModeProvider>
-      {/* MUI base styles */}
       <CssBaseline />
 
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <MoviesContextProvider>
-            {/* Header always visible */}
-            <SiteHeader />
+          <AuthContextProvider>
+            <MoviesContextProvider>
+              <SiteHeader />
+              <SnackbarHost />
+              <BackToTop />
 
-            {/* Global helpers (snackbar + back-to-top) */}
-            <SnackbarHost />
-            <BackToTop />
+              <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/movies/nowPlaying" element={<NowPlayingMovies />} />
+                <Route path="/movies/popular" element={<PopularMovies />} />
+                <Route path="/movies/topRated" element={<TopRatedMovies />} />
+                <Route path="/movies/trending/this-week" element={<TrendingThisWeekPage />} />
+                <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
+                <Route path="/reviews/:id" element={<MovieReviewPage />} />
+                <Route path="/movies/:id" element={<MoviePage />} />
+                <Route path="/person/:id" element={<PersonPage />} />
+                <Route path="/reviews/form" element={<AddMovieReviewPage />} />
+                <Route path="/" element={<HomePage />} />
 
-            {/* App routes */}
-            <Routes>
-              <Route path="/movies/nowPlaying" element={<NowPlayingMovies />} />
-              <Route path="/movies/popular" element={<PopularMovies />} />
-              <Route path="/movies/topRated" element={<TopRatedMovies />} />
-              <Route path="/movies/trending/this-week" element={<TrendingThisWeekPage />} />
-              <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
-              <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
-              <Route path="/movies/watchlist" element={<WatchlistPage />} />
-              <Route path="/reviews/:id" element={<MovieReviewPage />} />
-              <Route path="/movies/:id" element={<MoviePage />} />
-              <Route path="/person/:id" element={<PersonPage />} />
-              <Route path="/reviews/form" element={<AddMovieReviewPage />} />
-              <Route path="/" element={<HomePage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </MoviesContextProvider>
+                
+                <Route
+                  path="/movies/favorites"
+                  element={
+                      <FavoriteMoviesPage />
+                  }
+                />
+                <Route
+                  path="/movies/watchlist"
+                  element={
+                      <WatchlistPage />
+                  }
+                />
+
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </MoviesContextProvider>
+          </AuthContextProvider>
         </BrowserRouter>
 
         <ReactQueryDevtools initialIsOpen={false} />
