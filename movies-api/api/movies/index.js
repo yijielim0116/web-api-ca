@@ -1,24 +1,9 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
 
-import {
-  getMovies,
-  getMovie,
-  getUpcomingMovies,
-  getGenres,
-  getMovieImages,
-  getMovieCredits,
-  getMovieRecommendations,
-  getSimilarMovies,
-  getTopRatedMovies,
-  getPopularMovies,
-  getNowPlayingMovies,
-  getTrendingMovies,
-  searchMovies,
-  getPersonDetails,
-  getPersonCombinedCredits,
-  getCollectionDetails,
-} from "../tmdb-api.js";
+import {getMovies,getMovie,getUpcomingMovies,getGenres,getMovieImages,getMovieCredits,getMovieRecommendations,
+  getSimilarMovies,getTopRatedMovies,getPopularMovies,getNowPlayingMovies,getTrendingMovies,searchMovies,
+  getPersonDetails,getPersonCombinedCredits,getCollectionDetails,} from "../tmdb-api.js";
 
 import Favourite from "./favouriteModel.js";
 import Watchlist from "./watchlistModel.js";

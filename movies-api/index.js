@@ -4,7 +4,8 @@ import './db';
 // other imports
 import cors from 'cors';
 import usersRouter from './api/users';
-import moviesRouter from './api/movies';  
+import moviesRouter from './api/movies';
+import reviewsRouter from "./api/reviews/index.js";
 
 dotenv.config();
 
@@ -31,10 +32,14 @@ app.use('/api/users', usersRouter);
 
 app.use('/api/movies', moviesRouter);
 
+app.use("/api/reviews", reviewsRouter);
+
 app.use(errHandler);
 
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
 });
+
+app.get("/ping", (req, res) => res.json({ ok: true }));
 
 console.log("MONGO_DB:", process.env.MONGO_DB);
