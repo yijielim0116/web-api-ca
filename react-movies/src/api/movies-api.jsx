@@ -8,7 +8,9 @@ async function parse(res) {
 
 export const getFavourites = async (token) => {
   const res = await fetch(`${BASE}/favourites`, {
-    headers: { Authorization: token },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
   return parse(res);
 };
@@ -18,7 +20,7 @@ export const addFavourite = async (token, movie) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       movieId: movie.id,
@@ -32,9 +34,11 @@ export const addFavourite = async (token, movie) => {
 export const removeFavourite = async (token, movieId) => {
   const res = await fetch(`${BASE}/favourites/${movieId}`, {
     method: "DELETE",
-    headers: { Authorization: token },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
-  if (!res.ok) throw new Error("Failed to remove favourite");
+  return parse(res);
 };
 
 export const getWatchlist = async (token) => {

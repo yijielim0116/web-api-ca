@@ -1,9 +1,28 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
 
-import {getMovies,getMovie,getUpcomingMovies,getGenres,getMovieImages,getMovieCredits,getMovieRecommendations,
-    getSimilarMovies,getTopRatedMovies,getPopularMovies,getNowPlayingMovies,getTrendingMovies,searchMovies,
-    getPersonDetails,getPersonCombinedCredits,getCollectionDetails} from "../tmdb-api.js";
+import {
+  getMovies,
+  getMovie,
+  getUpcomingMovies,
+  getGenres,
+  getMovieImages,
+  getMovieCredits,
+  getMovieRecommendations,
+  getSimilarMovies,
+  getTopRatedMovies,
+  getPopularMovies,
+  getNowPlayingMovies,
+  getTrendingMovies,
+  searchMovies,
+  getPersonDetails,
+  getPersonCombinedCredits,
+  getCollectionDetails,
+} from "../tmdb-api.js";
+
+import Favourite from "./favouriteModel.js";
+import Watchlist from "./watchlistModel.js";
+import authenticate from "../../authenticate/index.js";
 
 const router = express.Router();
 
@@ -12,7 +31,6 @@ router.get("/discover", asyncHandler(async (req, res) => {
   res.status(200).json(data);
 }));
 
-// movie routes to be added
 router.get("/upcoming", asyncHandler(async (req, res) => {
   const data = await getUpcomingMovies();
   res.status(200).json(data);
@@ -65,6 +83,48 @@ router.get("/person/:id", asyncHandler(async (req, res) => {
 router.get("/collection/:id", asyncHandler(async (req, res) => {
   const data = await getCollectionDetails(req.params.id);
   res.status(200).json(data);
+}));
+
+router.get("/favourites", authenticate, asyncHandler(async (req, res) => {
+  const favs = await Favourite.find({ userId: req.user._id });
+  res.status(200).json(favs);
+}));
+
+router.post("/favourites", authenticate, asyncHandler(async (req, res) => {
+  const fav = await Favourite.create({
+    ...req.body,
+    userId: req.user._id,
+  });
+  res.status(201).json(fav);
+}));
+
+router.delete("/favourites/:movieId", authenticate, asyncHandler(async (req, res) => {
+  await Favourite.deleteOne({
+    userId: req.user._id,
+    movieId: Number(req.params.movieId),
+  });
+  res.status(204).end();
+}));
+
+router.get("/watchlist", authenticate, asyncHandler(async (req, res) => {
+  const list = await Watchlist.find({ userId: req.user._id });
+  res.status(200).json(list);
+}));
+
+router.post("/watchlist", authenticate, asyncHandler(async (req, res) => {
+  const item = await Watchlist.create({
+    ...req.body,
+    userId: req.user._id,
+  });
+  res.status(201).json(item);
+}));
+
+router.delete("/watchlist/:movieId", authenticate, asyncHandler(async (req, res) => {
+  await Watchlist.deleteOne({
+    userId: req.user._id,
+    movieId: Number(req.params.movieId),
+  });
+  res.status(204).end();
 }));
 
 router.get("/:id/images", asyncHandler(async (req, res) => {

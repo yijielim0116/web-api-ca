@@ -5,8 +5,6 @@ import './db';
 import cors from 'cors';
 import usersRouter from './api/users';
 import moviesRouter from './api/movies';  
-import favouritesRouter from './api/favourite'; 
-import watchlistRouter from "./api/watchlist/index.js";
 
 dotenv.config();
 
@@ -32,10 +30,6 @@ app.use(express.json());
 app.use('/api/users', usersRouter);
 
 app.use('/api/movies', moviesRouter);
-
-app.use("/api/favourites", favouritesRouter);
-
-app.use("/api/watchlist", watchlistRouter);
 
 app.use(errHandler);
 
