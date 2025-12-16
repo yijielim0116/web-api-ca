@@ -29,7 +29,7 @@ export default function SiteHeader() {
   const open = Boolean(anchorEl);
 
   const publicLinks = [
-    { label: "Home", path: "/" },
+    { label: "Discover", path: "/" },
     { label: "Trending", path: "/movies/trending/this-week" },
     { label: "Top-Rated", path: "/movies/topRated" },
     { label: "Popular", path: "/movies/popular" },

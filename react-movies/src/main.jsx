@@ -66,21 +66,8 @@ const App = () => {
                 <Route path="/person/:id" element={<PersonPage />} />
                 <Route path="/reviews/form" element={<AddMovieReviewPage />} />
                 <Route path="/" element={<HomePage />} />
-
-                
-                <Route
-                  path="/movies/favorites"
-                  element={
-                      <FavoriteMoviesPage />
-                  }
-                />
-                <Route
-                  path="/movies/watchlist"
-                  element={
-                      <WatchlistPage />
-                  }
-                />
-
+                <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+                <Route path="/movies/watchlist" element={<WatchlistPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </MoviesContextProvider>
